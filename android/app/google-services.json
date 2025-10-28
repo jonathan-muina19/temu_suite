@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "1019228006325",
+    "project_id": "temu-recipe",
+    "storage_bucket": "temu-recipe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1019228006325:android:19efccbd56d406ef9d9bfc",
+        "android_client_info": {
+          "package_name": "com.example.temu_recipe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1019228006325-u0k5v33v6134qqm8b9b07724nj58n1q8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.temu_recipe",
+            "certificate_hash": "88ded9107823ccfe848cb60cbd1a6adfe9740258"
+          }
+        },
+        {
+          "client_id": "1019228006325-7jbucu58f4i4se9vm5cgt7qs7oc7b6vl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhEu188xY2IbOEnZrDeoY8HqC1tuGcmKY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1019228006325-7jbucu58f4i4se9vm5cgt7qs7oc7b6vl.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1019228006325-772fks9qmaso8jtjb1c7e8c04n9me30l.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.temuRecipe"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
