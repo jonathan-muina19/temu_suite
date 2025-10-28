@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:temu_recipe/presentation/widgets/appbar_home.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -7,15 +8,12 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Accueil')
-            ],
-          ),
-        ),
+        appBar: const CustomAppBarExample(),
       ),
     );
   }
 }
+
+
+
+
