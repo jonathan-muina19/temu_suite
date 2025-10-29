@@ -21,7 +21,6 @@ class AuthSuccess extends AuthState {
   AuthSuccess(this.user);
   @override
   List<Object?> get props => [user];
-
 }
 
 /// Evenement de type email envoyé

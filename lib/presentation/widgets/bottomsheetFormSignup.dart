@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/auth/auth_event.dart';
 import '../../bloc/auth/auth_state.dart';
@@ -89,9 +88,9 @@ class _BottomsheetformState extends State<BottomsheetformSingup> {
         listener: (context, state) {
           if (state is EmailVerificationSent) {
             Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/email-verify',
-                (route) => false
+              context,
+              '/email-verify',
+              (route) => false,
             );
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(

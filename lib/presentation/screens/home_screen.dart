@@ -21,13 +21,11 @@ class _HomeScreenState extends State<HomeScreen> {
     /// Firebase Authentification
     final user = FirebaseAuth.instance.currentUser;
 
-
     /// Email de l'utilisateur
     final email = user?.email ?? 'Compte ou Email non disponible';
 
     /// Extraction du texte avant le @
     final username = email.contains('@') ? email.split('@')[0] : email;
-
 
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
@@ -41,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       builder: (context, state) {
         if (state is AuthLoading) {
-          return  Scaffold(
+          return Scaffold(
             body: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -60,12 +58,15 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           );
         }
-        if(state is AuthSuccess){
+        if (state is AuthSuccess) {
           final user = state.user;
           return Scaffold(
             body: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 60),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 60,
+                ),
                 child: Center(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -88,16 +89,17 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      if(currentUser != null && currentUser!.photoURL != null)
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundImage: NetworkImage(currentUser!.photoURL!),
-                      ),
+                      if (currentUser != null && currentUser!.photoURL != null)
+                        CircleAvatar(
+                          radius: 40,
+                          backgroundImage: NetworkImage(currentUser!.photoURL!),
+                        ),
                       const SizedBox(height: 20),
                       GestureDetector(
                         onTap:
-                            () =>
-                            context.read<AuthBloc>().add(SignOutRequested()),
+                            () => context.read<AuthBloc>().add(
+                              SignOutRequested(),
+                            ),
                         child: Container(
                           width: 150,
                           height: 50,

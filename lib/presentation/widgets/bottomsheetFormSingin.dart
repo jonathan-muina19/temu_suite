@@ -33,7 +33,8 @@ class _BottomsheetformState extends State<BottomsheetformSignin> {
   }
 
   String? passwordValidator(String? value) {
-    if (value == null || value.isEmpty) return 'Veuillez entrer votre mot de passe';
+    if (value == null || value.isEmpty)
+      return 'Veuillez entrer votre mot de passe';
     if (value.length < 8) return 'Mot de passe trop faible';
     return null;
   }
@@ -60,9 +61,9 @@ class _BottomsheetformState extends State<BottomsheetformSignin> {
             if (state is AuthFailure) {
               if (state.message == 'email-not-verified') {
                 Navigator.pushNamedAndRemoveUntil(
-                    context,
-                    '/email-verify',
-                    (route) => false
+                  context,
+                  '/email-verify',
+                  (route) => false,
                 );
               } else {
                 ScaffoldMessenger.of(context).showSnackBar(
@@ -74,9 +75,14 @@ class _BottomsheetformState extends State<BottomsheetformSignin> {
                       icon: Icon(Icons.error),
                     ),
                     behavior: SnackBarBehavior.floating,
-                    margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 630),
+                    margin: EdgeInsets.only(
+                      top: 10,
+                      left: 10,
+                      right: 10,
+                      bottom: 630,
+                    ),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15)
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     backgroundColor: Colors.red,
                     elevation: 20,
@@ -95,23 +101,25 @@ class _BottomsheetformState extends State<BottomsheetformSignin> {
                   behavior: SnackBarBehavior.floating,
                   margin: EdgeInsets.only(left: 10, right: 10, bottom: 580),
                   shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15)
+                    borderRadius: BorderRadius.circular(15),
                   ),
                   backgroundColor: Colors.green,
                   elevation: 20,
                 ),
               );
               Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/mainwrapper',
-                  (route) => false
+                context,
+                '/mainwrapper',
+                (route) => false,
               );
             }
           },
           builder: (context, state) {
             return Container(
               width: 430,
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(15)),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+              ),
               child: SingleChildScrollView(
                 child: Column(
                   children: [
@@ -162,37 +170,39 @@ class _BottomsheetformState extends State<BottomsheetformSignin> {
                           width: 326,
                           decoration: BoxDecoration(
                             color:
-                            state is AuthLoading
-                                ? Colors.orange.shade300
-                                : Colors.orange,
+                                state is AuthLoading
+                                    ? Colors.orange.shade300
+                                    : Colors.orange,
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Center(
-                            child: state is AuthLoading ?
-                            SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            ) :
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.login, color: Colors.white),
-                                const SizedBox(width: 5),
-                                Text(
-                                  'Connexion',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontFamily: 'Poppins',
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              ],
-                            ),
+                            child:
+                                state is AuthLoading
+                                    ? SizedBox(
+                                      width: 24,
+                                      height: 24,
+                                      child: CircularProgressIndicator(
+                                        color: Colors.white,
+                                        strokeWidth: 2,
+                                      ),
+                                    )
+                                    : Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.login, color: Colors.white),
+                                        const SizedBox(width: 5),
+                                        Text(
+                                          'Connexion',
+                                          style: TextStyle(
+                                            fontSize: 16,
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
                           ),
                         ),
                       ),

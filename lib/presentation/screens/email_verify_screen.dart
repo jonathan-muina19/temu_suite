@@ -1,6 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 
 import '../widgets/MyscaffoldMessenger.dart';
 import '../widgets/bottomsheetFormSingin.dart';
@@ -19,6 +19,29 @@ class EmailVerifyScreen extends StatelessWidget {
         return BottomsheetformSignin();
       },
     );
+  }
+
+  // Fonction pour renvoyer le lien de confirmation
+  Future<void> _sendVerificationEmail(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.currentUser?.sendEmailVerification();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: MyScaffoldMessenger(
+            title: 'Confirmation',
+            message: 'Un nouveau lien envoyer.\nVerifier vos mails',
+            color: Colors.blue,
+            icon: Icon(Icons.link),
+          ),
+          backgroundColor: Colors.blue,
+          elevation: 20,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur lors de l\'envoi du mail : $e')),
+      );
+    }
   }
 
   @override
@@ -73,7 +96,7 @@ class EmailVerifyScreen extends StatelessWidget {
               ),
               const SizedBox(height: 10),
               GestureDetector(
-                //onTap: () => _showBottomSheetSignin(context),
+                onTap: () => _sendVerificationEmail(context),
                 child: Container(
                   width: 270,
                   height: 60,
@@ -85,10 +108,10 @@ class EmailVerifyScreen extends StatelessWidget {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(Icons.email_outlined, color: Colors.white),
+                        Icon(Icons.link, color: Colors.white),
                         const SizedBox(width: 10),
                         Text(
-                          "Renvoyer l'email",
+                          "Renvoyer le lien",
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,

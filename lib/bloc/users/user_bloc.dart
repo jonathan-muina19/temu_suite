@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:temu_recipe/bloc/users/user_events.dart';
 import 'package:temu_recipe/bloc/users/user_state.dart';
 
-
 import '../../data/models/user_model.dart';
 
 class UserBloc extends Bloc<UserEvent, UserState> {

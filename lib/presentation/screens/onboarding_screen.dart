@@ -7,7 +7,6 @@ import 'onboarding/onboarding_free.dart';
 import 'onboarding/onboarding_one.dart';
 import 'onboarding/onboarding_two.dart';
 
-
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});
 

@@ -15,42 +15,43 @@ class MyAuthProvider implements AuthRepository {
 
   /// Pour s'assurer que tout est bien  charger
   /// et Ouvrir la page pour choisir son compte google
-  Future<void> ensureInitialozed() async{
+  Future<void> ensureInitialozed() async {
     await GoogleSignInPlatform.instance.init(const InitParameters());
   }
 
-  Future<void> signInWithGoogle() async{
-    try{
+  Future<void> signInWithGoogle() async {
+    try {
       // Ouvrir la page pour choisir son compte google
       await ensureInitialozed();
 
       // Authentification
-      final AuthenticationResults result = await GoogleSignInPlatform.instance.authenticate(
-        const AuthenticateParameters()
-      );
+      final AuthenticationResults result = await GoogleSignInPlatform.instance
+          .authenticate(const AuthenticateParameters());
       // recuperer le jeton id du User
       final String? idToken = result.authenticationTokens.idToken;
 
       // au cas ou idToken ne marche pas
-      if(idToken != null){
+      if (idToken != null) {
         // connecter
         // Recuperer toutes les informations du user
-        final OAuthCredential credential = GoogleAuthProvider.credential(idToken: idToken);
+        final OAuthCredential credential = GoogleAuthProvider.credential(
+          idToken: idToken,
+        );
 
         UserCredential userCredential = await _firebaseAuth
             .signInWithCredential(credential);
         final firebaseUser = userCredential.user;
-        if(firebaseUser != null){
-          print("Connecté avec Google: ${firebaseUser.displayName ?? firebaseUser.email}");
+        if (firebaseUser != null) {
+          print(
+            "Connecté avec Google: ${firebaseUser.displayName ?? firebaseUser.email}",
+          );
         }
-      }else{
+      } else {
         print("Erreur : Erreur lors de la recuperation du token google");
       }
-
-    } on GoogleSignInException catch (e){
-        throw e;
-
-    } on FirebaseAuthException catch (e){
+    } on GoogleSignInException catch (e) {
+      throw e;
+    } on FirebaseAuthException catch (e) {
       throw e;
     }
   }

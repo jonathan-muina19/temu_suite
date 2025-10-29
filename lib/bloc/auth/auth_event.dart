@@ -23,7 +23,7 @@ class SignInRequested extends AuthEvent {
   List<Object?> get props => [email, password];
 }
 
-class SignInWithGoogle extends AuthEvent{}
+class SignInWithGoogle extends AuthEvent {}
 
 class SignUpRequested extends AuthEvent {
   final String email;

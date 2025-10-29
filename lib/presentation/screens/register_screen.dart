@@ -42,8 +42,8 @@ class RegisterScreen extends StatelessWidget {
     }
 
     return BlocConsumer<AuthBloc, AuthState>(
-      listener: (context, state){
-        if(state is AuthFailure){
+      listener: (context, state) {
+        if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: MyScaffoldMessenger(
@@ -53,19 +53,24 @@ class RegisterScreen extends StatelessWidget {
                 icon: Icon(Icons.error),
               ),
               behavior: SnackBarBehavior.floating,
-              margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 630),
+              margin: EdgeInsets.only(
+                top: 10,
+                left: 10,
+                right: 10,
+                bottom: 630,
+              ),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15)
+                borderRadius: BorderRadius.circular(15),
               ),
               backgroundColor: Colors.red,
               elevation: 20,
             ),
           );
-        } else if(state is AuthSuccess){
+        } else if (state is AuthSuccess) {
           Navigator.pushReplacementNamed(context, '/mainwrapper');
         }
       },
-      builder: (context, state){
+      builder: (context, state) {
         return Scaffold(
           body: SingleChildScrollView(
             scrollDirection: Axis.vertical,
@@ -82,7 +87,7 @@ class RegisterScreen extends StatelessWidget {
                 const SizedBox(height: 10),
                 const SizedBox(height: 10),
                 RegisterButton(
-                  onTap: (){
+                  onTap: () {
                     //context.read<AuthBloc>().add(SignInWithGoogle());
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
@@ -93,9 +98,14 @@ class RegisterScreen extends StatelessWidget {
                           icon: Icon(Icons.warning_amber_outlined),
                         ),
                         behavior: SnackBarBehavior.floating,
-                        margin: EdgeInsets.only(top: 10, left: 10, right: 10, bottom: 630),
+                        margin: EdgeInsets.only(
+                          top: 10,
+                          left: 10,
+                          right: 10,
+                          bottom: 630,
+                        ),
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15)
+                          borderRadius: BorderRadius.circular(15),
                         ),
                         backgroundColor: Colors.orange,
                         elevation: 20,
@@ -161,8 +171,8 @@ class RegisterScreen extends StatelessWidget {
                           color: Colors.orange,
                         ),
                         recognizer:
-                        TapGestureRecognizer()
-                          ..onTap = () => _showBottomSheetSignin(context),
+                            TapGestureRecognizer()
+                              ..onTap = () => _showBottomSheetSignin(context),
                       ),
                     ],
                   ),
@@ -171,7 +181,7 @@ class RegisterScreen extends StatelessWidget {
             ),
           ),
         );
-      }
+      },
     );
   }
 }

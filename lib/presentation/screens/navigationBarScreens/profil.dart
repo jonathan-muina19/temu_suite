@@ -9,9 +9,7 @@ class ProfilPage extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Profil')
-          ],
+          children: [Text('Profil')],
         ),
       ),
     );

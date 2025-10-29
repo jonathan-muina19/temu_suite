@@ -10,9 +10,7 @@ class FavorisPage extends StatelessWidget {
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Favoris')
-            ],
+            children: [Text('Favoris')],
           ),
         ),
       ),

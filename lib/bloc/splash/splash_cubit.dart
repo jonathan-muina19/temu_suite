@@ -2,7 +2,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:temu_recipe/bloc/splash/splash_state.dart';
 
-
 class SplashCubit extends Cubit<SplashState> {
   SplashCubit() : super(SplashState.initial()); // état initial propre
 

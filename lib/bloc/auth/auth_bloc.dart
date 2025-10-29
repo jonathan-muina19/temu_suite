@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-
 import '../../data/models/user_model.dart';
 import '../../data/repositories/auth_repository.dart';
 import 'auth_event.dart';
@@ -28,10 +27,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         if (user != null) {
           // 🔥 Récupérer les infos Firestore
-          final snapshot = await FirebaseFirestore.instance
-              .collection("users")
-              .doc(user.uid)
-              .get();
+          final snapshot =
+              await FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(user.uid)
+                  .get();
 
           if (snapshot.exists) {
             // 🔥 Récupérer les infos Firestore
@@ -83,7 +83,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           emit(AuthFailure("Connexion Google annulée."));
           return;
         }
-       
 
         // ✅ Directement utiliser les infos FirebaseAuth
         final userModel = UserModel(
@@ -98,7 +97,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         String message;
         switch (e.code) {
           case 'account-exists-with-different-credential':
-            message =  "Un compte existe déjà avec une autre méthode de connexion.";
+            message =
+                "Un compte existe déjà avec une autre méthode de connexion.";
           case 'invalid-credential':
             message = "Les identifiants Google sont invalides.";
           case 'user-disabled':
@@ -114,8 +114,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthFailure("Erreur inattendue $e"));
       }
     });
-
-
 
     // Inscription
     on<SignUpRequested>((event, emit) async {
@@ -174,10 +172,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           }
 
           // Récupérer le document Firestore
-          final snapshot = await FirebaseFirestore.instance
-              .collection("users")
-              .doc(user.uid)
-              .get();
+          final snapshot =
+              await FirebaseFirestore.instance
+                  .collection("users")
+                  .doc(user.uid)
+                  .get();
 
           if (snapshot.exists) {
             final userModel = UserModel.fromMap(snapshot.data()!, user.uid);
@@ -192,7 +191,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthFailure("Erreur : $e"));
       }
     });
-
 
     //
     on<CheckEmailVerified>((event, emit) async {

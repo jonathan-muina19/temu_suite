@@ -10,9 +10,7 @@ class CategoriesPage extends StatelessWidget {
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Categories')
-            ],
+            children: [Text('Categories')],
           ),
         ),
       ),

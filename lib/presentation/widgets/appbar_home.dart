@@ -26,28 +26,29 @@ class CustomAppBarExample extends StatelessWidget
           maxRadius: 100,
           minRadius: 100,
           backgroundImage:
-            user?.photoUrl != null && user!.photoUrl.isNotEmpty
-            ? NetworkImage(user.photoUrl)
-              : null,
-          child: (user?.photoUrl == null || user!.photoUrl.isEmpty)
-              ? const Icon(Icons.person)
-              : null,
+              user?.photoUrl != null && user!.photoUrl.isNotEmpty
+                  ? NetworkImage(user.photoUrl)
+                  : null,
+          child:
+              (user?.photoUrl == null || user!.photoUrl.isEmpty)
+                  ? const Icon(Icons.person)
+                  : null,
         ),
       ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children:  [
+        children: [
           Text(
             'Hello 👋',
             style: TextStyle(
               color: Colors.grey,
               fontSize: 16,
-              fontWeight: FontWeight.bold
+              fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(height: 2),
           Text(
-            user != null ? "${user.username}" : "Accueil",
+            user != null ? user.username : "Accueil",
             style: TextStyle(
               color: Colors.black,
               fontSize: 16,
@@ -59,7 +60,7 @@ class CustomAppBarExample extends StatelessWidget
       actions: [
         IconButton(
           onPressed: () {},
-          icon: const Icon(Icons.notifications_none, color: Colors.black),
+          icon: Image.asset("assets/icons/cloche.png", height: 25,),
         ),
         const SizedBox(width: 8),
       ],

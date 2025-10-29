@@ -15,11 +15,9 @@ import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   final AuthRepository authRepository = MyAuthProvider();
-  final firestore =  FirebaseFirestore.instance;
+  final firestore = FirebaseFirestore.instance;
 
   runApp(
     MultiBlocProvider(
@@ -28,10 +26,12 @@ Future<void> main() async {
 
         /// ✅ Ajout du SplashCubit ici
         BlocProvider<SplashCubit>(create: (context) => SplashCubit()),
+
         /// ✅ Ajout du UserBloc ici
         BlocProvider<UserBloc>(create: (context) => UserBloc(firestore)),
+
         /// ✅ Ajout du NavigationCubit ici
-        BlocProvider<NavigationCubit>(create: (context) => NavigationCubit())
+        BlocProvider<NavigationCubit>(create: (context) => NavigationCubit()),
       ],
       child: MyApp(authRepository: authRepository),
     ),
@@ -48,9 +48,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(
-        scaffoldBackgroundColor: Colors.white
-      ),
+      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
       debugShowCheckedModeBanner: false,
       home: const SplashScreen(),
       onGenerateRoute: _appRouter.onGenerateRoute,
