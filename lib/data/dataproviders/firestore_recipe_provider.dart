@@ -10,15 +10,23 @@ class MyRecipeProvider implements RecipeRepository {
   // Obtenir la liste des recettes
   // On retourne un flux de données
   Stream<List<RecipeModel>> getRecipes() {
-    return _firebaseFirestore.collection("recipes").snapshots().map((
-        snapshot) =>
-        snapshot.docs.map((doc) => RecipeModel.fromMap(doc.data())).toList());
+    return _firebaseFirestore.collection("recipes").snapshots().map(
+          (snapshot) => snapshot.docs
+          .map((doc) => RecipeModel.fromMap(doc.data(), doc.id))
+          .toList(),
+    );
   }
 
   // Mettre à jour le favori
-  Future<void> updateFavorite(String recipeId, bool isFavorite) async {
+  Future<void> updateFavorite(String? recipeId, bool isFavorite) async {
+    if (recipeId == null || recipeId.isEmpty) {
+      print("❌ Erreur : l'ID du document est vide ou null");
+      return;
+    }
+
     await _firebaseFirestore.collection("recipes").doc(recipeId).update({
       "isFavorite": isFavorite,
     });
   }
+
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:temu_recipe/data/dataproviders/firestore_recipe_provider.dart';
 import 'package:temu_recipe/presentation/widgets/appbar_home.dart';
+import 'package:temu_recipe/presentation/widgets/recipeCard.dart';
 import 'package:temu_recipe/presentation/widgets/searchbar.dart';
 
 import '../recipe_detail_screen.dart';
@@ -9,6 +11,7 @@ class HomePage extends StatelessWidget {
   HomePage({super.key});
 
   final TextEditingController controllerSearch = TextEditingController();
+  final MyRecipeProvider _provider = MyRecipeProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -34,30 +37,27 @@ class HomePage extends StatelessWidget {
 
               // 🔥 Partie qui affiche les recettes
               Expanded(
-                // On utilise un StreamBuilder pour afficher les recettes en temps réel
                 child: StreamBuilder<QuerySnapshot>(
-                  // On récupère les recettes depuis Firestore
                   stream: FirebaseFirestore.instance
                       .collection('recipes')
                       .snapshots(),
                   builder: (context, snapshot) {
-
-                    // On affiche un circular quand on recuperer les recettes
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
-                          child: CircularProgressIndicator(
-                            color: Colors.orange
-                          ));
+                        child: CircularProgressIndicator(color: Colors.orange),
+                      );
                     }
 
                     if (snapshot.hasError) {
                       return Center(
-                          child: Text('Erreur : ${snapshot.error}'));
+                        child: Text('Erreur : ${snapshot.error}'),
+                      );
                     }
 
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                       return const Center(
-                          child: Text('Aucune recette trouvée'));
+                        child: Text('Aucune recette trouvée'),
+                      );
                     }
 
                     final recipes = snapshot.data!.docs;
@@ -65,58 +65,47 @@ class HomePage extends StatelessWidget {
                     return ListView.builder(
                       itemCount: recipes.length,
                       itemBuilder: (context, index) {
-                        // On récupère les données de la recette
-                        final data = recipes[index].data() as Map<String, dynamic>;
-                        return Card(
-                          margin: const EdgeInsets.symmetric(vertical: 8),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          elevation: 3,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => RecipeDetailScreen(recipe: data),
+                        final doc = recipes[index]; // ✅ document Firestore
+                        final data = doc.data() as Map<String, dynamic>; // ✅ données
+                        final recipeId = doc.id; // ✅ l'id Firestore
+
+                        final isFavorite = data['isFavorite'] ?? false;
+
+                        return RecipeCard(
+                          imagePath: data['imagePath'] ?? '',
+                          title: data['name'] ?? '',
+                          description: data['description'] ?? '',
+                          time: data['time'] ?? '',
+                          isFavorite: isFavorite,
+                          type: data['Type'] ?? '',
+                          onFavoriteTap: () async {
+                            try {
+                              await _provider.updateFavorite(recipeId, !isFavorite);
+
+                              // ✅ Optionnel : feedback visuel
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    !isFavorite
+                                        ? 'Ajouté aux favoris ❤️'
+                                        : 'Retiré des favoris 💔',
+                                  ),
+                                  duration: const Duration(seconds: 1),
                                 ),
                               );
-                            },
-                            child: ListTile(
-                              leading: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Image.asset(
-                                  data['imagePath'] ?? 'assets/images/default.png',
-                                  width: 60,
-                                  height: 60,
-                                  fit: BoxFit.cover,
-                                ),
+                            } catch (e) {
+                              print('Erreur Firestore: $e');
+                            }
+                          },
+                          onRecipeDetails: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) =>
+                                    RecipeDetailScreen(recipe: data),
                               ),
-                              title: Text(
-                                data['name'] ?? 'Nom inconnu',
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: 'Montserrat',
-                                ),
-                              ),
-                              subtitle: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    data['description'] ?? '',
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ],
-                              ),
-                              trailing: Icon(
-                                data['isFavorite'] == false
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: Colors.red,
-                              ),
-                            ),
-                          )
+                            );
+                          },
                         );
                       },
                     );

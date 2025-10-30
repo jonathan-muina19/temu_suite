@@ -32,9 +32,9 @@ class RecipeModel {
     };
   }
 
-  factory RecipeModel.fromMap(Map<String, dynamic> map) {
+  factory RecipeModel.fromMap(Map<String, dynamic> map, String documentId) {
     return RecipeModel(
-      id: map["id"],
+      id: documentId,
       name: map["name"],
       description: map["description"],
       type: map["type"],

@@ -43,7 +43,7 @@ class RecipeDetailScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Type : ${recipe['type'] ?? 'Inconnu'}",
+                      "Type : ${recipe['Type'] ?? 'Inconnu'}",
                       style: const TextStyle(
                         fontSize: 16,
                         color: Colors.grey,
@@ -54,7 +54,7 @@ class RecipeDetailScreen extends StatelessWidget {
                         const Icon(Icons.timer, size: 18, color: Colors.orange),
                         const SizedBox(width: 5),
                         Text(
-                          recipe['tempsPreparation'] ?? 'N/A',
+                          recipe['time'] ?? 'N/A',
                           style: const TextStyle(color: Colors.grey),
                         ),
                       ],
@@ -110,17 +110,7 @@ class RecipeDetailScreen extends StatelessWidget {
             ),
           ),
         ),
-        floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.redAccent,
-          onPressed: () {
-            // TODO: gérer ajout aux favoris
-          },
-          child: Icon(
-            recipe['isFavorite'] == true
-                ? Icons.favorite
-                : Icons.favorite_border,
-          ),
-        ),
+
       ),
     );
   }
