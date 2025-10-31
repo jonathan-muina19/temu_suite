@@ -60,7 +60,7 @@ class CustomAppBarExample extends StatelessWidget
       actions: [
         IconButton(
           onPressed: () {},
-          icon: Image.asset("assets/icons/cloche.png", height: 25,),
+          icon: Image.asset("assets/icons/cloche.png", height: 25),
         ),
         const SizedBox(width: 8),
       ],

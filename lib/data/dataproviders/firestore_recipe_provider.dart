@@ -10,11 +10,15 @@ class MyRecipeProvider implements RecipeRepository {
   // Obtenir la liste des recettes
   // On retourne un flux de données
   Stream<List<RecipeModel>> getRecipes() {
-    return _firebaseFirestore.collection("recipes").snapshots().map(
-          (snapshot) => snapshot.docs
-          .map((doc) => RecipeModel.fromMap(doc.data(), doc.id))
-          .toList(),
-    );
+    return _firebaseFirestore
+        .collection("recipes")
+        .snapshots()
+        .map(
+          (snapshot) =>
+              snapshot.docs
+                  .map((doc) => RecipeModel.fromMap(doc.data(), doc.id))
+                  .toList(),
+        );
   }
 
   // Mettre à jour le favori
@@ -27,6 +31,11 @@ class MyRecipeProvider implements RecipeRepository {
     await _firebaseFirestore.collection("recipes").doc(recipeId).update({
       "isFavorite": isFavorite,
     });
-  }
 
+    if (isFavorite == true) {
+      print("❤️ Ajouté aux favoris");
+    } else {
+      print("💔 Retiré des favoris");
+    }
+  }
 }

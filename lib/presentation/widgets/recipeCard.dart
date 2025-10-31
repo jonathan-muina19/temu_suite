@@ -12,7 +12,6 @@ class RecipeCard extends StatelessWidget {
   final VoidCallback onFavoriteTap;
   final VoidCallback onRecipeDetails;
 
-
   const RecipeCard({
     super.key,
     required this.onFavoriteTap,
@@ -28,8 +27,9 @@ class RecipeCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 100,
-      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+      width: MediaQuery.of(context).size.width * 0.4,
+      //height: 300,
+      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -54,7 +54,7 @@ class RecipeCard extends StatelessWidget {
                 ),
                 child: Image.asset(
                   imagePath,
-                  height: 130,
+                  height: 100, // tu peux mettre 100 ou moins
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
@@ -68,9 +68,7 @@ class RecipeCard extends StatelessWidget {
                     radius: 14,
                     backgroundColor: Colors.white,
                     child: Icon(
-                      isFavorite
-                          ? Icons.favorite
-                          : Icons.favorite_border,
+                      isFavorite ? Icons.favorite : Icons.favorite_border,
                       color: Colors.red,
                       size: 19,
                     ),
@@ -95,10 +93,10 @@ class RecipeCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Temps : ${time}",
+                  "${time}",
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: Colors.grey,
                   ),
                 ),
               ],
@@ -113,7 +111,6 @@ class RecipeCard extends StatelessWidget {
                 Text(
                   type,
                   style: const TextStyle(fontSize: 12, color: Colors.grey),
-
                 ),
               ],
             ),
@@ -127,7 +124,7 @@ class RecipeCard extends StatelessWidget {
                   children: [
                     const Icon(Icons.star, color: Colors.orange, size: 14),
                     const SizedBox(width: 4),
-                    Text('4.5', style: TextStyle(color: Colors.amberAccent),)
+                    Text('4.5', style: TextStyle(color: Colors.amberAccent)),
                   ],
                 ),
                 ElevatedButton(
@@ -136,16 +133,19 @@ class RecipeCard extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
                   ),
                   onPressed: onRecipeDetails,
                   child: const Text(
                     "Voir",
                     style: TextStyle(
-                        fontSize: 14,
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold),
+                      fontSize: 14,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],

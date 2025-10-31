@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:temu_recipe/data/dataproviders/firestore_recipe_provider.dart';
 import 'package:temu_recipe/presentation/widgets/appbar_home.dart';
+import 'package:temu_recipe/presentation/widgets/carousel_home.dart';
 import 'package:temu_recipe/presentation/widgets/recipeCard.dart';
 import 'package:temu_recipe/presentation/widgets/searchbar.dart';
-
 import '../recipe_detail_screen.dart';
 
 class HomePage extends StatelessWidget {
@@ -31,11 +31,13 @@ class HomePage extends StatelessWidget {
                   fontFamily: "Montserrat",
                 ),
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 10),
               const SearchBarExample(),
-              const SizedBox(height: 20),
+              const SizedBox(height: 15),
+              const RecipeImageCard(),
+              const SizedBox(height: 10),
 
-              // 🔥 Partie qui affiche les recettes
+              // 🔥 Partie affichage des recettes
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
                   stream: FirebaseFirestore.instance
@@ -49,9 +51,7 @@ class HomePage extends StatelessWidget {
                     }
 
                     if (snapshot.hasError) {
-                      return Center(
-                        child: Text('Erreur : ${snapshot.error}'),
-                      );
+                      return Center(child: Text('Erreur : ${snapshot.error}'));
                     }
 
                     if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -62,12 +62,19 @@ class HomePage extends StatelessWidget {
 
                     final recipes = snapshot.data!.docs;
 
-                    return ListView.builder(
+                    return GridView.builder(
+                      padding: EdgeInsets.zero,
                       itemCount: recipes.length,
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2, // 👉 2 colonnes
+                        crossAxisSpacing: 10,
+                        mainAxisSpacing: 10,
+                        childAspectRatio: 0.70, // Ajuste la hauteur des cartes
+                      ),
                       itemBuilder: (context, index) {
-                        final doc = recipes[index]; // ✅ document Firestore
-                        final data = doc.data() as Map<String, dynamic>; // ✅ données
-                        final recipeId = doc.id; // ✅ l'id Firestore
+                        final doc = recipes[index];
+                        final data = doc.data() as Map<String, dynamic>;
+                        final recipeId = doc.id;
 
                         final isFavorite = data['isFavorite'] ?? false;
 
@@ -76,13 +83,11 @@ class HomePage extends StatelessWidget {
                           title: data['name'] ?? '',
                           description: data['description'] ?? '',
                           time: data['time'] ?? '',
-                          isFavorite: isFavorite,
                           type: data['Type'] ?? '',
+                          isFavorite: isFavorite,
                           onFavoriteTap: () async {
                             try {
                               await _provider.updateFavorite(recipeId, !isFavorite);
-
-                              // ✅ Optionnel : feedback visuel
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
@@ -101,8 +106,7 @@ class HomePage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) =>
-                                    RecipeDetailScreen(recipe: data),
+                                builder: (_) => RecipeDetailScreen(recipe: data),
                               ),
                             );
                           },
