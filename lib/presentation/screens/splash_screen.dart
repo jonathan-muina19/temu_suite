@@ -14,52 +14,70 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  bool _authChecked = false; // ✅ pour éviter plusieurs redirections
+  bool _authChecked = false;
 
   @override
   void initState() {
     super.initState();
 
-    // Vérifie si l'utilisateur Firebase est connecté
+    // Vérifie l'état auth et premier lancement
     Future.microtask(() {
       context.read<AuthBloc>().add(CheckAuthStatus());
-    });
-
-    // Vérifie si c'est le premier lancement
-    Future.microtask(() {
       context.read<SplashCubit>().checkFirstLaunch();
     });
+  }
+
+  // ✅ Précharge les images de ta HomePage pour éviter le freeze
+  Future<void> _precacheHomeAssets() async {
+    await precacheImage(const AssetImage('assets/images/airbnb.png'), context);
+
+    // Ajoute ici toutes les images de ta HomePage :
+    // await precacheImage(AssetImage('assets/images/home_bg.png'), context);
+    // await precacheImage(AssetImage('assets/images/categories.png'), context);
+  }
+
+  // ✅ Navigation fluide sans freeze
+  Future<void> _navigate(String route) async {
+    await _precacheHomeAssets();
+    await Future.delayed(
+      const Duration(milliseconds: 150),
+    ); // stabilise le build
+
+    if (mounted) {
+      Navigator.pushReplacementNamed(context, route);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocListener(
       listeners: [
-        // 🔹 Écoute de l'état du Splash (premier lancement ou non)
+        // ✅ Premier lancement → onboarding
         BlocListener<SplashCubit, SplashState>(
-          listener: (context, state) {
+          listener: (context, state) async {
+            if (_authChecked) return;
             if (state.status == SplashStatus.firstLaunch) {
-              Navigator.pushReplacementNamed(context, '/onboarding');
+              _authChecked = true;
+              await _navigate('/onboarding');
             }
           },
         ),
 
-        // 🔹 Écoute des états d'authentification Firebase
+        // ✅ Authentification Firebase
         BlocListener<AuthBloc, AuthState>(
-          listener: (context, state) {
-            // On empêche plusieurs redirections pendant un hot reload
+          listener: (context, state) async {
             if (_authChecked) return;
             if (state is AuthLoading) return;
 
             if (state is AuthSuccess) {
               _authChecked = true;
-              Navigator.pushReplacementNamed(context, '/mainwrapper');
+              await _navigate('/mainwrapper');
             } else if (state is AuthEmailNotVerified) {
               _authChecked = true;
-              Navigator.pushReplacementNamed(context, '/email-verify');
+              await _navigate('/email-verify');
             } else if (state is AuthFailure) {
               _authChecked = true;
-              Navigator.pushReplacementNamed(context, '/register');
+              await _navigate('/register');
             }
           },
         ),
@@ -80,8 +98,8 @@ class _SplashScreenState extends State<SplashScreen> {
                   color: Colors.white,
                 ),
               ),
-              const SizedBox(height: 50),
-              const CircularProgressIndicator(color: Colors.white),
+              // ✅ Splash statique (pas d’animation = pas de lag)
+              const SizedBox(height: 40),
             ],
           ),
         ),

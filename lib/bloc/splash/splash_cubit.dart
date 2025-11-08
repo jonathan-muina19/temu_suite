@@ -3,20 +3,24 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:temu_recipe/bloc/splash/splash_state.dart';
 
 class SplashCubit extends Cubit<SplashState> {
-  SplashCubit() : super(SplashState.initial()); // état initial propre
+  SplashCubit() : super(SplashState.initial());
 
-  /// Vérifie si l'app est lancée pour la première fois
   Future<void> checkFirstLaunch() async {
-    await Future.delayed(const Duration(seconds: 4)); // Timer du splash
+    // ✅ Laisse SharedPreferences se charger correctement
+    await Future.delayed(const Duration(milliseconds: 120));
 
     final prefs = await SharedPreferences.getInstance();
 
-    final onboardingDone = prefs.getBool('onboarding_done') ?? false;
+    final onboardingDone = prefs.getBool('onboarding_done');
 
-    if (onboardingDone) {
-      emit(state.copyWith(status: SplashStatus.notFirstLaunch));
-    } else {
+    // ✅ Valeur non définie = première installation
+    if (onboardingDone == null || onboardingDone == false) {
       emit(state.copyWith(status: SplashStatus.firstLaunch));
+    } else {
+      emit(state.copyWith(status: SplashStatus.notFirstLaunch));
     }
+
+    // ✅ Splash timer (ne bloque plus la logique)
+    await Future.delayed(const Duration(seconds: 2));
   }
 }

@@ -36,13 +36,38 @@ class HomePage extends StatelessWidget {
               const SizedBox(height: 15),
               const RecipeImageCard(),
               const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                child: Row(
+                  children: [
+                    Text(
+                      'Mes Recettes',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(width: 120),
+                    TextButton(
+                        onPressed: (){
+                        },
+                        child: Text('Voir plus', style: TextStyle(
+                          color: Colors.orange,
+                          fontWeight: FontWeight.bold
+                          ),
+                        )
+                    )
+                  ],
+                ),
+              ),
 
               // 🔥 Partie affichage des recettes
               Expanded(
                 child: StreamBuilder<QuerySnapshot>(
-                  stream: FirebaseFirestore.instance
-                      .collection('recipes')
-                      .snapshots(),
+                  stream:
+                      FirebaseFirestore.instance
+                          .collection('recipes')
+                          .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
                       return const Center(
@@ -65,12 +90,14 @@ class HomePage extends StatelessWidget {
                     return GridView.builder(
                       padding: EdgeInsets.zero,
                       itemCount: recipes.length,
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, // 👉 2 colonnes
-                        crossAxisSpacing: 10,
-                        mainAxisSpacing: 10,
-                        childAspectRatio: 0.70, // Ajuste la hauteur des cartes
-                      ),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2, // 👉 2 colonnes
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            childAspectRatio:
+                                0.70, // Ajuste la hauteur des cartes
+                          ),
                       itemBuilder: (context, index) {
                         final doc = recipes[index];
                         final data = doc.data() as Map<String, dynamic>;
@@ -87,7 +114,10 @@ class HomePage extends StatelessWidget {
                           isFavorite: isFavorite,
                           onFavoriteTap: () async {
                             try {
-                              await _provider.updateFavorite(recipeId, !isFavorite);
+                              await _provider.updateFavorite(
+                                recipeId,
+                                !isFavorite,
+                              );
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
                                   content: Text(
@@ -106,7 +136,8 @@ class HomePage extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => RecipeDetailScreen(recipe: data),
+                                builder:
+                                    (_) => RecipeDetailScreen(recipe: data),
                               ),
                             );
                           },

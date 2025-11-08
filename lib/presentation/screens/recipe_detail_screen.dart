@@ -45,10 +45,10 @@ class RecipeDetailScreen extends StatelessWidget {
                     Text(
                       "Type : ${recipe['Type'] ?? 'Inconnu'}",
                       style: const TextStyle(
-                          fontSize: 16,
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold
-                          ),
+                        fontSize: 16,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     Row(
                       children: [
@@ -92,7 +92,10 @@ class RecipeDetailScreen extends StatelessWidget {
                         width: 90, // Ajustez la largeur selon vos besoins
                         //margin: const EdgeInsets.symmetric(horizontal: 5),
                         decoration: BoxDecoration(
-                          color: Colors.orange.shade300, // Couleur sombre inspirée de l'image
+                          color:
+                              Colors
+                                  .orange
+                                  .shade300, // Couleur sombre inspirée de l'image
                           borderRadius: BorderRadius.circular(20.0),
                         ),
                         padding: const EdgeInsets.all(8.0),
@@ -116,8 +119,8 @@ class RecipeDetailScreen extends StatelessWidget {
                                     ), // Remplacer par Image.asset(imagePath): Container(),
                                   ),
                                 ),
-                                // La coche verte
 
+                                // La coche verte
                               ],
                             ),
                             const SizedBox(height: 10),

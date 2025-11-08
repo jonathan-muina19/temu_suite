@@ -38,15 +38,16 @@ class RecipeModel {
   factory RecipeModel.fromMap(Map<String, dynamic> map, String documentId) {
     return RecipeModel(
       id: documentId,
-      name: map["name"],
-      description: map["description"],
-      type: map["type"],
-      steps: List<String>.from(map["steps"]),
-      ingredients: List<String>.from(
-        map["ingredients"],
-      ), // nouvelle propriété "ingredients"
-      time: map["time"],
-      imagePath: map["imagePath"],
+      name: map["name"] ?? 'Nom inconnu',
+      description: map["description"] ?? '',
+      type: map["type"] ?? 'Inconnu',
+      steps: map["steps"] != null ? List<String>.from(map["steps"]) : [],
+      ingredients:
+          map["ingredients"] != null
+              ? List<String>.from(map["ingredients"])
+              : [],
+      time: map["time"] ?? '0 min',
+      imagePath: map["imagePath"] ?? '',
       isFavorite: map["isFavorite"] ?? false,
     );
   }

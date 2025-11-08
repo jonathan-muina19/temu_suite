@@ -1,108 +1,83 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FavorisPage extends StatelessWidget {
-  const FavorisPage({super.key});
+import '../../../data/models/recipe_model.dart';
+import '../../widgets/favoriteItem.dart';
+
+class FavoritesPage extends StatelessWidget {
+  const FavoritesPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, dynamic>> recipes = [
-      {
-        "title": "Boxty Breakfast",
-        "image": "assets/images/boxty.jpg",
-        "time": "30 min",
-        "people": "4",
-        "country": "Irish",
-      },
-      {
-        "title": "Pondu",
-        "image": "assets/images/pondu.jpg",
-        "time": "1h30",
-        "people": "3",
-        "country": "Congo",
-      },
-      {
-        "title": "Salade César",
-        "image": "assets/images/salad.jpg",
-        "time": "20 min",
-        "people": "2",
-        "country": "French",
-      },
-      // tu peux en ajouter d'autres ici
-    ];
-
     return Scaffold(
+      //backgroundColor: const Color(0xffF1F5F9),
       appBar: AppBar(
-        title: const Text("Recettes"),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: GridView.builder(
-          itemCount: recipes.length,
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, // 👈 2 cartes par ligne
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            childAspectRatio: 3 / 2,
-          ),
-          itemBuilder: (context, index) {
-            final recipe = recipes[index];
-            return RecipeCard(recipe: recipe);
-          },
+        title: const Text(
+          "Mes favoris",
+          style: TextStyle(fontFamily: 'Poppins'),
         ),
+        centerTitle: true,
+        backgroundColor: Colors.white30,
+        elevation: 0,
+      ),
+      body: StreamBuilder<QuerySnapshot>(
+        stream:
+            FirebaseFirestore.instance
+                .collection('recipes')
+                .where('isFavorite', isEqualTo: true)
+                .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+            return const Center(child: Text("Aucune recette en favoris"));
+          }
+
+          final docs = snapshot.data!.docs;
+
+          return ListView.builder(
+            itemCount: docs.length,
+            padding: const EdgeInsets.only(bottom: 20),
+            itemBuilder: (context, index) {
+              final doc = docs[index];
+              final data = doc.data() as Map<String, dynamic>;
+              final recipeId = doc.id;
+
+              // Gestion robuste des données potentiellement null
+              final RecipeModel? recipe =
+                  (() {
+                    try {
+                      return RecipeModel.fromMap(data, recipeId);
+                    } catch (e) {
+                      print(
+                        'Erreur lors de la récupération de la recette $recipeId : $e',
+                      );
+                      return null;
+                    }
+                  })();
+
+              if (recipe == null) return const SizedBox.shrink();
+
+              return FavoriteItem(
+                recipe: recipe,
+                time: recipe.time,
+                name: recipe.name,
+                type: recipe.type,
+                imagePath: recipe.imagePath,
+                onDelete: () => _toggleFavorite(recipeId, data['isFavorite']),
+              );
+            },
+          );
+        },
       ),
     );
   }
-}
 
-class RecipeCard extends StatelessWidget {
-  final Map<String, dynamic> recipe;
-  const RecipeCard({super.key, required this.recipe});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        image: DecorationImage(
-          image: AssetImage(recipe["image"]),
-          fit: BoxFit.cover,
-        ),
-      ),
-      child: Stack(
-        children: [
-          // Dégradé noir transparent
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
-                ),
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.black.withOpacity(0.0),
-                    Colors.black.withOpacity(0.6),
-                  ],
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                ),
-              ),
-              child: Text(
-                recipe["title"],
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+  Future<void> _toggleFavorite(String docId, bool currentValue) async {
+    await FirebaseFirestore.instance.collection('recipes').doc(docId).update({
+      'isFavorite': !currentValue,
+    });
   }
 }
-

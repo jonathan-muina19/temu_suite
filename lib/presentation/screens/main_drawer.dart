@@ -15,7 +15,7 @@ class MainWrapper extends StatelessWidget {
     final List<Widget> screens = [
       HomePage(),
       CategoriesPage(),
-      FavorisPage(),
+      FavoritesPage(),
       HomeScreen(),
     ];
 
