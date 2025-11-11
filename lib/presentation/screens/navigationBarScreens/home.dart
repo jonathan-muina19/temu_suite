@@ -37,7 +37,10 @@ class HomePage extends StatelessWidget {
               const RecipeImageCard(),
               const SizedBox(height: 10),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 5,
+                ),
                 child: Row(
                   children: [
                     Text(
@@ -49,14 +52,15 @@ class HomePage extends StatelessWidget {
                     ),
                     const SizedBox(width: 120),
                     TextButton(
-                        onPressed: (){
-                        },
-                        child: Text('Voir plus', style: TextStyle(
+                      onPressed: () {},
+                      child: Text(
+                        'Voir plus',
+                        style: TextStyle(
                           color: Colors.orange,
-                          fontWeight: FontWeight.bold
-                          ),
-                        )
-                    )
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -126,7 +130,7 @@ class HomePage extends StatelessWidget {
                                         ? 'Ajouté aux favoris ❤️'
                                         : 'Retiré des favoris 💔',
                                     style: TextStyle(
-                                      fontWeight: FontWeight.bold
+                                      fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                   duration: const Duration(seconds: 1),

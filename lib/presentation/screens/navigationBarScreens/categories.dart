@@ -4,29 +4,33 @@ import 'package:temu_recipe/data/dataproviders/category_provider.dart';
 
 import '../../../data/models/category_model.dart';
 import '../../../data/repositories/category_repository.dart';
+import '../../recipeBy_categories.dart';
 import '../../utils/icon_converter.dart';
 import '../../widgets/category_card.dart';
 
 class CategoriesPage extends StatelessWidget {
   CategoriesPage({super.key});
 
-  final CategoryRepository repository = CategoryProvider(firestore: FirebaseFirestore.instance);
+  final CategoryRepository repository = CategoryProvider(
+    firestore: FirebaseFirestore.instance,
+  );
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Categories", style: TextStyle(
-              fontFamily: 'Poppins'
-          ),
-          ),
+          title: Text("Categories", style: TextStyle(fontFamily: 'Poppins')),
           centerTitle: true,
           backgroundColor: Colors.white,
           elevation: 0,
           leading: GestureDetector(
-            onTap: () => Navigator.pushNamedAndRemoveUntil
-              (context, '/mainwrapper', (route) => false),
+            onTap:
+                () => Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/mainwrapper',
+                  (route) => false,
+                ),
             child: Container(
               margin: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
               decoration: BoxDecoration(
@@ -54,9 +58,9 @@ class CategoriesPage extends StatelessWidget {
           stream: repository.getCategories(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator(
-                color: Colors.orangeAccent
-              ));
+              return const Center(
+                child: CircularProgressIndicator(color: Colors.orangeAccent),
+              );
             }
 
             if (!snapshot.hasData || snapshot.data!.isEmpty) {
@@ -81,7 +85,16 @@ class CategoriesPage extends StatelessWidget {
                   title: category.name,
                   icon: convertIcon(category.icon),
                   onTap: () {
-                    // TODO: Aller vers liste des recettes par catégorie
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder:
+                            (_) => RecipesByCategoryPage(
+                              categoryName: category.name,
+                              categoryId: category.id,
+                            ),
+                      ),
+                    );
                   },
                 );
               },

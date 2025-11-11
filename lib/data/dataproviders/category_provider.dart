@@ -3,16 +3,13 @@ import 'package:temu_recipe/data/repositories/category_repository.dart';
 import '../models/category_model.dart';
 
 class CategoryProvider implements CategoryRepository {
-  final FirebaseFirestore firestore ;
+  final FirebaseFirestore firestore;
 
   CategoryProvider({required this.firestore});
 
   @override
   Stream<List<CategoryModel>> getCategories() {
-    return firestore
-        .collection('categories')
-        .snapshots()
-        .map((snapshot) {
+    return firestore.collection('categories').snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         return CategoryModel.fromFirestore(doc.data(), doc.id);
       }).toList();

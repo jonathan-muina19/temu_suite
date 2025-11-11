@@ -12,16 +12,17 @@ class FavoritesPage extends StatelessWidget {
     return Scaffold(
       //backgroundColor: const Color(0xffF1F5F9),
       appBar: AppBar(
-        title: Text("Mes favoris", style: TextStyle(
-          fontFamily: 'Poppins'
-          ),
-        ),
+        title: Text("Mes favoris", style: TextStyle(fontFamily: 'Poppins')),
         centerTitle: true,
         backgroundColor: Colors.white,
         elevation: 0,
         leading: GestureDetector(
-          onTap: () => Navigator.pushNamedAndRemoveUntil
-            (context, '/mainwrapper', (route) => false),
+          onTap:
+              () => Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/mainwrapper',
+                (route) => false,
+              ),
           child: Container(
             margin: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
             decoration: BoxDecoration(
@@ -54,9 +55,9 @@ class FavoritesPage extends StatelessWidget {
                 .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator(
-              color: Colors.orangeAccent,
-            ));
+            return const Center(
+              child: CircularProgressIndicator(color: Colors.orangeAccent),
+            );
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
