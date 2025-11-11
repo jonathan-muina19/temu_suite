@@ -67,6 +67,7 @@ class HomePage extends StatelessWidget {
                   stream:
                       FirebaseFirestore.instance
                           .collection('recipes')
+                          //.where('Type', isEqualTo: 'Plat principal' )
                           .snapshots(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
@@ -124,6 +125,9 @@ class HomePage extends StatelessWidget {
                                     !isFavorite
                                         ? 'Ajouté aux favoris ❤️'
                                         : 'Retiré des favoris 💔',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold
+                                    ),
                                   ),
                                   duration: const Duration(seconds: 1),
                                 ),

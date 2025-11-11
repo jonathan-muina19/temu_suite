@@ -29,7 +29,7 @@ class RecipeCard extends StatelessWidget {
     return Container(
       width: MediaQuery.of(context).size.width * 0.4,
       //height: 300,
-      margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+      margin: const EdgeInsets.symmetric(horizontal: 4, vertical: 5),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),

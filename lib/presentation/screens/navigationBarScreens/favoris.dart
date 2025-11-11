@@ -12,14 +12,40 @@ class FavoritesPage extends StatelessWidget {
     return Scaffold(
       //backgroundColor: const Color(0xffF1F5F9),
       appBar: AppBar(
-        title: const Text(
-          "Mes favoris",
-          style: TextStyle(fontFamily: 'Poppins'),
+        title: Text("Mes favoris", style: TextStyle(
+          fontFamily: 'Poppins'
+          ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.white30,
+        backgroundColor: Colors.white,
         elevation: 0,
+        leading: GestureDetector(
+          onTap: () => Navigator.pushNamedAndRemoveUntil
+            (context, '/mainwrapper', (route) => false),
+          child: Container(
+            margin: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 6,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Center(
+              child: Icon(
+                Icons.arrow_back_ios_new,
+                size: 18,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+        ),
       ),
+
       body: StreamBuilder<QuerySnapshot>(
         stream:
             FirebaseFirestore.instance
@@ -28,7 +54,9 @@ class FavoritesPage extends StatelessWidget {
                 .snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator(
+              color: Colors.orangeAccent,
+            ));
           }
 
           if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
