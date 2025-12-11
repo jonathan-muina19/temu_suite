@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../screens/email_verify_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/main_drawer.dart';
+import '../screens/notification_page.dart';
 import '../screens/onboarding/onboarding_two.dart';
 import '../screens/onboarding_screen.dart';
 import '../screens/register_screen.dart';
@@ -16,6 +17,8 @@ class AppRouter {
         return MaterialPageRoute(builder: (_) => SplashScreen());
       case '/homescreen':
         return MaterialPageRoute(builder: (_) => HomeScreen());
+      case '/notification':
+        return MaterialPageRoute(builder: (_) => NotificationPage());
       case '/onboarding':
         return MaterialPageRoute(builder: (_) => OnboardingScreen());
       case '/email-verify':

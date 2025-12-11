@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../bloc/auth/auth_bloc.dart';
 import '../../bloc/auth/auth_state.dart';
 import '../../data/models/user_model.dart';
+import '../screens/notification_page.dart';
 
 class CustomAppBarExample extends StatelessWidget
     implements PreferredSizeWidget {
@@ -59,7 +60,14 @@ class CustomAppBarExample extends StatelessWidget
       ),
       actions: [
         IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => NotificationPage()
+              )
+            );
+          },
           icon: Image.asset("assets/icons/cloche.png", height: 25),
         ),
         const SizedBox(width: 8),

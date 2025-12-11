@@ -4,9 +4,10 @@ import 'package:temu_recipe/data/dataproviders/category_provider.dart';
 
 import '../../../data/models/category_model.dart';
 import '../../../data/repositories/category_repository.dart';
-import '../../recipeBy_categories.dart';
 import '../../utils/icon_converter.dart';
 import '../../widgets/category_card.dart';
+import '../recipeBy_categories.dart';
+
 
 class CategoriesPage extends StatelessWidget {
   CategoriesPage({super.key});
@@ -80,7 +81,6 @@ class CategoriesPage extends StatelessWidget {
               ),
               itemBuilder: (context, index) {
                 final category = categories[index];
-
                 return CategoryCard(
                   title: category.name,
                   icon: convertIcon(category.icon),

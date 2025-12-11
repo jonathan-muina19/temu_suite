@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:temu_recipe/data/dataproviders/firestore_recipe_provider.dart';
-import 'package:temu_recipe/presentation/widgets/appbar_home.dart';
-import 'package:temu_recipe/presentation/widgets/carousel_home.dart';
-import 'package:temu_recipe/presentation/widgets/recipeCard.dart';
-import 'package:temu_recipe/presentation/widgets/searchbar.dart';
+import '../../widgets/appbar_home.dart';
+import '../../widgets/carousel_home.dart';
+import '../../widgets/recipeCard.dart';
+import '../../widgets/searchbar.dart';
 import '../recipe_detail_screen.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,8 +13,10 @@ class HomePage extends StatelessWidget {
   final TextEditingController controllerSearch = TextEditingController();
   final MyRecipeProvider _provider = MyRecipeProvider();
 
+
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
       child: Scaffold(
         appBar: const CustomAppBarExample(),
@@ -31,8 +33,8 @@ class HomePage extends StatelessWidget {
                   fontFamily: "Montserrat",
                 ),
               ),
-              const SizedBox(height: 10),
-              const SearchBarExample(),
+              //const SizedBox(height: 10),
+              //const SearchBarExample(),
               const SizedBox(height: 15),
               const RecipeImageCard(),
               const SizedBox(height: 10),
