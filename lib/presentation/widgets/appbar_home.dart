@@ -63,9 +63,7 @@ class CustomAppBarExample extends StatelessWidget
           onPressed: () {
             Navigator.push(
               context,
-              MaterialPageRoute(
-                  builder: (_) => NotificationPage()
-              )
+              MaterialPageRoute(builder: (_) => NotificationPage()),
             );
           },
           icon: Image.asset("assets/icons/cloche.png", height: 25),

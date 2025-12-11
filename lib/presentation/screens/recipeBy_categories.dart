@@ -37,12 +37,11 @@ class RecipesByCategoryPage extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Image.asset('assets/icons/category_icon.gif', height: 180,),
+                  Image.asset('assets/icons/category_icon.gif', height: 180),
                   Text(
                     "Aucune recette de cette categorie trouvée",
                     style: TextStyle(color: Colors.grey, fontFamily: 'Poppins'),
                   ),
-
                 ],
               ),
             );

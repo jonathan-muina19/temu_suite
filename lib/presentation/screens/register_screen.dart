@@ -10,9 +10,6 @@ import '../widgets/bottomsheetFormSignup.dart';
 import '../widgets/bottomsheetFormSingin.dart';
 import '../widgets/register_button.dart';
 
-
-
-
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
 

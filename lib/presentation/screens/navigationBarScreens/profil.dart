@@ -18,13 +18,11 @@ class _ProfilPageState extends State<ProfilPage> {
 
   @override
   Widget build(BuildContext context) {
-
     /// Firebase Authentification
     final user = FirebaseAuth.instance.currentUser;
 
     /// Email de l'utilisateur
     final email = user?.email ?? 'Compte ou Email non disponible';
-
 
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
@@ -32,7 +30,7 @@ class _ProfilPageState extends State<ProfilPage> {
           Navigator.pushNamedAndRemoveUntil(
             context,
             '/register',
-                (route) => false,
+            (route) => false,
           );
         }
       },
@@ -74,16 +72,22 @@ class _ProfilPageState extends State<ProfilPage> {
                     CircleAvatar(
                       backgroundColor: Colors.blue,
                       radius: 50,
-                      backgroundImage: AssetImage('assets/images/utilisateur.png'),
-                    ),
-                    Text('${state.user.username}', style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w500,
+                      backgroundImage: AssetImage(
+                        'assets/images/utilisateur.png',
                       ),
                     ),
-                    Text('${state.user.email}', style: TextStyle(
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w500
+                    Text(
+                      '${state.user.username}',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      '${state.user.email}',
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                     const SizedBox(height: 30),
@@ -139,14 +143,13 @@ class _ProfilPageState extends State<ProfilPage> {
   }
 }
 
-
 Widget buildMenuItem(
-    BuildContext context, {
-      required Color color,
-      required IconData icon,
-      required String title,
-      required VoidCallback onTap,
-    }) {
+  BuildContext context, {
+  required Color color,
+  required IconData icon,
+  required String title,
+  required VoidCallback onTap,
+}) {
   return ListTile(
     onTap: onTap,
     leading: Container(
@@ -155,18 +158,18 @@ Widget buildMenuItem(
       decoration: BoxDecoration(
         color: color.withOpacity(0.15),
         //shape: BoxShape.circle,
-        borderRadius: BorderRadius.circular(10)
+        borderRadius: BorderRadius.circular(10),
       ),
       child: Icon(icon, color: color),
     ),
     title: Text(
       title,
       style: const TextStyle(
-          color: Colors.black,
-          fontSize: 15,
-          fontWeight: FontWeight.w500
+        color: Colors.black,
+        fontSize: 15,
+        fontWeight: FontWeight.w500,
       ),
     ),
-    trailing: Image.asset('assets/icons/angle-right.png', height: 16,)
+    trailing: Image.asset('assets/icons/angle-right.png', height: 16),
   );
 }

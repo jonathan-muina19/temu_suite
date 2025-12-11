@@ -17,7 +17,7 @@ class MainWrapper extends StatelessWidget {
       HomePage(),
       CategoriesPage(),
       FavoritesPage(),
-      ProfilPage(),
+     // ProfilPage(),
     ];
 
     return BlocProvider(
@@ -36,8 +36,7 @@ class MainWrapper extends StatelessWidget {
               showSelectedLabels: true,
               showUnselectedLabels: true,
               onTap:
-                  (index) =>
-                      context.read<NavigationCubit>().updateIndex(index),
+                  (index) => context.read<NavigationCubit>().updateIndex(index),
               items: [
                 BottomNavigationBarItem(
                   icon: Image.asset("assets/icons/maison.png", height: 20),
@@ -63,17 +62,14 @@ class MainWrapper extends StatelessWidget {
                     height: 20,
                   ),
                 ),
-                BottomNavigationBarItem(
-                  icon: Image.asset(
-                    "assets/icons/utilisateur.png",
-                    height: 20,
-                  ),
+                /*BottomNavigationBarItem(
+                  icon: Image.asset("assets/icons/utilisateur.png", height: 20),
                   label: 'Profil',
                   activeIcon: Image.asset(
                     "assets/icons/utilisateur (1).png",
                     height: 20,
                   ),
-                ),
+                ),*/
               ],
             ),
           );

@@ -14,12 +14,8 @@ class NotificationPage extends StatelessWidget {
             const SizedBox(height: 10),
             const Text(
               'Aucune notification disponible ',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
-
-            )
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
           ],
         ),
       ),

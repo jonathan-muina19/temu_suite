@@ -13,10 +13,8 @@ class HomePage extends StatelessWidget {
   final TextEditingController controllerSearch = TextEditingController();
   final MyRecipeProvider _provider = MyRecipeProvider();
 
-
   @override
   Widget build(BuildContext context) {
-
     return SafeArea(
       child: Scaffold(
         appBar: const CustomAppBarExample(),

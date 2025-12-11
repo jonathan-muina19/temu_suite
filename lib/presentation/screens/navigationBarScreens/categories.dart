@@ -8,7 +8,6 @@ import '../../utils/icon_converter.dart';
 import '../../widgets/category_card.dart';
 import '../recipeBy_categories.dart';
 
-
 class CategoriesPage extends StatelessWidget {
   CategoriesPage({super.key});
 
