@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:temu_recipe/data/dataproviders/firestore_recipe_provider.dart';
 
 import '../../../data/models/recipe_model.dart';
-import '../../widgets/favoriteItem.dart';
+import '../../../data/repositories/recipes_repository.dart';
 
 class FavoritesPage extends StatelessWidget {
-  const FavoritesPage({super.key});
+  FavoritesPage({super.key});
+
+  final MyRecipeProvider repository = MyRecipeProvider();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: const Color(0xffF1F5F9),
       appBar: AppBar(
         title: Text("Mes favoris", style: TextStyle(fontFamily: 'Poppins')),
         centerTitle: true,
@@ -19,10 +22,10 @@ class FavoritesPage extends StatelessWidget {
         leading: GestureDetector(
           onTap:
               () => Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/mainwrapper',
+            context,
+            '/mainwrapper',
                 (route) => false,
-              ),
+          ),
           child: Container(
             margin: const EdgeInsets.only(left: 16, top: 8, bottom: 8),
             decoration: BoxDecoration(
@@ -46,67 +49,88 @@ class FavoritesPage extends StatelessWidget {
           ),
         ),
       ),
+      body: StreamBuilder<List<String>>(
+        stream: repository.getFavoriteRecipeIds(),
+        builder: (context, favSnapshot) {
+          if (!favSnapshot.hasData) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-      body: StreamBuilder<QuerySnapshot>(
-        stream:
-            FirebaseFirestore.instance
-                .collection('recipes')
-                .where('isFavorite', isEqualTo: true)
-                .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(color: Colors.orangeAccent),
+          final favoriteIds = favSnapshot.data!;
+
+          if (favoriteIds.isEmpty) {
+            return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset("assets/icons/notifications-telephoniques.gif", height: 170),
+                    Text("Aucune recette en favori", style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18
+                      ),
+                    ),
+                  ],
+                )
             );
           }
 
-          if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Center(child: Text("Aucune recette en favoris"));
-          }
+          return StreamBuilder<List<RecipeModel>>(
+            stream: repository.getFavoriteRecipesByIds(favoriteIds),
+            builder: (context, recipeSnapshot) {
+              if (!recipeSnapshot.hasData) {
+                return const Center(child: CircularProgressIndicator());
+              }
 
-          final docs = snapshot.data!.docs;
+              final recipes = recipeSnapshot.data!;
 
-          return ListView.builder(
-            itemCount: docs.length,
-            padding: const EdgeInsets.only(bottom: 20),
-            itemBuilder: (context, index) {
-              final doc = docs[index];
-              final data = doc.data() as Map<String, dynamic>;
-              final recipeId = doc.id;
+              return ListView.builder(
+                itemCount: recipes.length,
+                itemBuilder: (context, index) {
+                  final recipe = recipes[index];
 
-              // Gestion robuste des données potentiellement null
-              final RecipeModel? recipe =
-                  (() {
-                    try {
-                      return RecipeModel.fromMap(data, recipeId);
-                    } catch (e) {
-                      print(
-                        'Erreur lors de la récupération de la recette $recipeId : $e',
-                      );
-                      return null;
-                    }
-                  })();
-
-              if (recipe == null) return const SizedBox.shrink();
-
-              return FavoriteItem(
-                recipe: recipe,
-                time: recipe.time,
-                name: recipe.name,
-                type: recipe.type,
-                imagePath: recipe.imagePath,
-                onDelete: () => _toggleFavorite(recipeId, data['isFavorite']),
+                  return Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: const [
+                        BoxShadow(color: Colors.black12, blurRadius: 6),
+                      ],
+                    ),
+                    child: ListTile(
+                      leading: ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: Image.asset(
+                          recipe.imagePath,
+                          width: 60,
+                          height: 60,
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      title: Text(
+                        recipe.name,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      subtitle: Text("⏱ ${recipe.time}"),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.delete, color: Colors.red),
+                        onPressed: () async {
+                          await FirebaseFirestore.instance
+                              .collection('users')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .collection('favorites')
+                              .doc(recipe.id)
+                              .delete();
+                        },
+                      ),
+                    ),
+                  );
+                },
               );
             },
           );
         },
       ),
     );
-  }
-
-  Future<void> _toggleFavorite(String docId, bool currentValue) async {
-    await FirebaseFirestore.instance.collection('recipes').doc(docId).update({
-      'isFavorite': !currentValue,
-    });
   }
 }

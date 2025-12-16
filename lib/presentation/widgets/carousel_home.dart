@@ -12,7 +12,7 @@ class RecipeImageCard extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(16),
           image: const DecorationImage(
-            image: AssetImage('assets/images/madesu.jpg'), // ton image ici
+            image: AssetImage('assets/images/madeblo.png'), // ton image ici
             fit: BoxFit.cover,
           ),
         ),
@@ -29,7 +29,7 @@ class RecipeImageCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: const Text(
-                  "Featured",
+                  "A la une",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 12,

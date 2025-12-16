@@ -26,13 +26,14 @@ class CustomAppBarExample extends StatelessWidget
         child: CircleAvatar(
           maxRadius: 100,
           minRadius: 100,
+          backgroundColor: Colors.orange[100],
           backgroundImage:
               user?.photoUrl != null && user!.photoUrl.isNotEmpty
                   ? NetworkImage(user.photoUrl)
                   : null,
           child:
               (user?.photoUrl == null || user!.photoUrl.isEmpty)
-                  ? const Icon(Icons.person)
+                  ? const Icon(Icons.person, color: Colors.black,)
                   : null,
         ),
       ),

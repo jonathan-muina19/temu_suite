@@ -24,13 +24,10 @@ Future<void> main() async {
     MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(create: (context) => AuthBloc(authRepository)),
-
         /// ✅ Ajout du SplashCubit ici
         BlocProvider<SplashCubit>(create: (context) => SplashCubit()),
-
         /// ✅ Ajout du UserBloc ici
         BlocProvider<UserBloc>(create: (context) => UserBloc(firestore)),
-
         /// ✅ Ajout du NavigationCubit ici
         BlocProvider<NavigationCubit>(create: (context) => NavigationCubit()),
       ],

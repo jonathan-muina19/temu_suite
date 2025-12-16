@@ -17,7 +17,7 @@ class MainWrapper extends StatelessWidget {
       HomePage(),
       CategoriesPage(),
       FavoritesPage(),
-     // ProfilPage(),
+      ProfilPage(),
     ];
 
     return BlocProvider(
@@ -62,14 +62,14 @@ class MainWrapper extends StatelessWidget {
                     height: 20,
                   ),
                 ),
-                /*BottomNavigationBarItem(
+                BottomNavigationBarItem(
                   icon: Image.asset("assets/icons/utilisateur.png", height: 20),
                   label: 'Profil',
                   activeIcon: Image.asset(
                     "assets/icons/utilisateur (1).png",
                     height: 20,
                   ),
-                ),*/
+                ),
               ],
             ),
           );

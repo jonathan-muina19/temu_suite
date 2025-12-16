@@ -12,7 +12,6 @@ class RecipeDetailScreen extends StatefulWidget {
 }
 
 class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
-  final MyRecipeProvider _provider = MyRecipeProvider();
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +73,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                       (context, index) => const SizedBox(height: 8),
                   itemBuilder: (context, index) {
                     return Container(
-                      height: 50,
+                      height: 60,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(15),

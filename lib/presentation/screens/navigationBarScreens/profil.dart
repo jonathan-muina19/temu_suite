@@ -100,23 +100,9 @@ class _ProfilPageState extends State<ProfilPage> {
                     ),
                     buildMenuItem(
                       context,
-                      color: Colors.green,
-                      icon: Icons.settings,
-                      title: "Settings",
-                      onTap: () {},
-                    ),
-                    buildMenuItem(
-                      context,
-                      color: Colors.orangeAccent,
-                      icon: Icons.lock,
-                      title: "Privacy Policy",
-                      onTap: () {},
-                    ),
-                    buildMenuItem(
-                      context,
                       color: Colors.red,
                       icon: Icons.power_settings_new,
-                      title: "Logout",
+                      title: "Deconnexion",
                       onTap: () {
                         context.read<AuthBloc>().add(SignOutRequested());
                       },

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:temu_recipe/data/dataproviders/firestore_recipe_provider.dart';
+import 'package:temu_recipe/presentation/screens/mesRecettes.dart';
 import '../../widgets/appbar_home.dart';
 import '../../widgets/carousel_home.dart';
 import '../../widgets/recipeCard.dart';
-import '../../widgets/searchbar.dart';
 import '../recipe_detail_screen.dart';
 
 class HomePage extends StatelessWidget {
@@ -31,8 +31,6 @@ class HomePage extends StatelessWidget {
                   fontFamily: "Montserrat",
                 ),
               ),
-              //const SizedBox(height: 10),
-              //const SearchBarExample(),
               const SizedBox(height: 15),
               const RecipeImageCard(),
               const SizedBox(height: 10),
@@ -52,7 +50,14 @@ class HomePage extends StatelessWidget {
                     ),
                     const SizedBox(width: 120),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => Mesrecettes()
+                            )
+                        );
+                      },
                       child: Text(
                         'Voir plus',
                         style: TextStyle(
@@ -94,7 +99,7 @@ class HomePage extends StatelessWidget {
 
                     return GridView.builder(
                       padding: EdgeInsets.zero,
-                      itemCount: recipes.length,
+                      itemCount: recipes.length > 3 ? 3 : recipes.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 2, // 👉 2 colonnes
@@ -108,49 +113,48 @@ class HomePage extends StatelessWidget {
                         final data = doc.data() as Map<String, dynamic>;
                         final recipeId = doc.id;
 
-                        final isFavorite = data['isFavorite'] ?? false;
+                        return StreamBuilder<bool>(
+                          stream: _provider.isRecipeFavorite(recipeId),
+                          builder: (context, favSnapshot) {
+                            final isFavorite = favSnapshot.data ?? false;
 
-                        return RecipeCard(
-                          imagePath: data['imagePath'] ?? '',
-                          title: data['name'] ?? '',
-                          description: data['description'] ?? '',
-                          time: data['time'] ?? '',
-                          type: data['Type'] ?? '',
-                          isFavorite: isFavorite,
-                          onFavoriteTap: () async {
-                            try {
-                              await _provider.updateFavorite(
-                                recipeId,
-                                !isFavorite,
-                              );
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Text(
-                                    !isFavorite
-                                        ? 'Ajouté aux favoris ❤️'
-                                        : 'Retiré des favoris 💔',
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
+                            return RecipeCard(
+                              imagePath: data['imagePath'] ?? '',
+                              title: data['name'] ?? '',
+                              description: data['description'] ?? '',
+                              time: data['time'] ?? '',
+                              type: data['Type'] ?? '',
+                              isFavorite: isFavorite,
+                              onFavoriteTap: () async {
+                                await _provider.toggleFavorite(recipeId);
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold
+                                      ),
+                                      isFavorite
+                                          ? 'Retiré des favoris 💔'
+                                          : 'Ajouté aux favoris ❤️',
                                     ),
+                                    duration: const Duration(seconds: 1),
                                   ),
-                                  duration: const Duration(seconds: 1),
-                                ),
-                              );
-                            } catch (e) {
-                              print('Erreur Firestore: $e');
-                            }
-                          },
-                          onRecipeDetails: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder:
-                                    (_) => RecipeDetailScreen(recipe: data),
-                              ),
+                                );
+                              },
+                              onRecipeDetails: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => RecipeDetailScreen(recipe: data),
+                                  ),
+                                );
+                              },
                             );
                           },
                         );
                       },
+
                     );
                   },
                 ),
